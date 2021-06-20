@@ -22,6 +22,13 @@ setuptools.setup(
     package_dir={"": "backend"},
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.6",
-    install_requires=['aiofiles==0.7.0', 'fastapi==0.65.2', 'orjson==3.5.3', 'uvicorn==0.14.0'],
+    install_requires=[
+        'aiofiles==0.7.0',
+        'fastapi==0.65.2',
+        'orjson==3.5.3',
+        'uvicorn==0.14.0',
+        'uvloop==0.15.2',
+        'httptools==0.2.0',
+    ],
     extras_require={'test': ['pytest-asyncio==0.15.1', 'pytest==6.2.4', 'httpx==0.18.2']},
 )
