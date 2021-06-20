@@ -6,8 +6,20 @@ from api.main import app
 pytestmark = pytest.mark.asyncio
 
 
-async def test_read_main():
+@pytest.fixture
+async def client():
     async with httpx.AsyncClient(app=app, base_url='http://test') as client:
-        response = await client.get("/")
+        yield client
+
+
+async def test_read_main(client):
+    response = await client.get("/")
     assert response.status_code == 200
     assert response.json() == {'status': 'ok'}
+
+
+async def test_authors(client):
+    resp = await client.get('/author')
+    assert resp.status_code == 200
+    j = resp.json()
+    assert j[0]['first_name'] == 'Stanislav'
