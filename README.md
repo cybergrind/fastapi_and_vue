@@ -1,2 +1,11 @@
-# fastapi_and_vue
-just for test
+# FastAPI and Vue
+
+Repo just for test
+
+
+## Getting started
+
+Run with `make run`
+
+Tests: `make test`
+
