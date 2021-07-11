@@ -30,5 +30,7 @@ setuptools.setup(
         'uvloop==0.15.2',
         'httptools==0.2.0',
     ],
-    extras_require={'test': ['pytest-asyncio==0.15.1', 'pytest==6.2.4', 'httpx==0.18.2']},
+    extras_require={
+        'test': ['pytest-asyncio==0.15.1', 'pytest==6.2.4', 'httpx==0.18.2', 'factory-boy==3.2.0']
+    },
 )
