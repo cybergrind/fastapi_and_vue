@@ -14,4 +14,6 @@ class Author(BaseModel):
 
 class Book(BaseModel):
     id: int
+    title: str
+    year: int
     author: Author

@@ -1,6 +1,7 @@
 import httpx
 import pytest
 from api.main import app
+from api.factories import AuthorF, BookF
 
 
 pytestmark = pytest.mark.asyncio
@@ -23,3 +24,8 @@ async def test_authors(client):
     assert resp.status_code == 200
     j = resp.json()
     assert j[0]['first_name'] == 'Stanislav'
+
+
+async def test_factories():
+    assert BookF()
+    assert AuthorF()
