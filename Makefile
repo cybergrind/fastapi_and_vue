@@ -4,7 +4,7 @@ BIN := ${VENV}/bin
 
 venv: backend/requirements.txt
 	python3 -m venv ${VENV}
-	${BIN}/pip install -r backend/requirements.txt
+	${BIN}/pip install -r backend/requirements-dev.txt
 	touch ${VENV}
 
 
