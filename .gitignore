@@ -130,3 +130,5 @@ dmypy.json
 *~
 *\#
 .envrc
+
+frontend/node_modules
