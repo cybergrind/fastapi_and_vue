@@ -1,5 +1,6 @@
-from factory import Factory, Faker
 import factory
+from factory import Faker
+
 from .models import Author, Book
 
 

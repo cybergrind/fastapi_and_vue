@@ -2,8 +2,8 @@ from typing import Any, List
 
 from fastapi import FastAPI
 
-from .models import Author, Book
 from .factories import BookF
+from .models import Author, Book
 from .utils import ORJSONResponse
 
 
