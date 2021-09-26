@@ -15,7 +15,7 @@ const store = createStore({
       state.default -= 1
     },
     setAuthors(state, authors) {
-      state.authors = [...state.authors, ...authors]
+      state.authors = authors
     },
   },
 })

@@ -17,6 +17,8 @@
       {{ author.id }}: {{ author.first_name }} {{ author.last_name }}
   </div>
 
+  <button @click="generate">Generate Random</button>
+
     <h3>Essential Links</h3>
     <ul>
       <li>
@@ -79,6 +81,14 @@ export default {
     },
     decrement() {
       this.$store.commit('decrement')
+    },
+    generate() {
+      axios.post('http://localhost:8009/author/generate').then(() => {
+        axios.get('http://localhost:8009/author').then(response => {
+          console.log(response.data)
+          this.$store.commit('setAuthors', response.data)
+        })
+      })
     }
   },
   props: {
