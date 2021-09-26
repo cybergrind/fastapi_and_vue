@@ -3,7 +3,7 @@
   <h1>{{ msg }}</h1>
   <div>Default: {{ store.default }}</div>
   <button v-on:click="increment">INC</button>
-  <button v-on:click="decrement">DEC</button>
+  <button @click="decrement">DEC</button>
   <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -11,25 +11,12 @@
         >vue-cli documentation</a
       >.
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
+  <h3>Authors</h3>
+
+  <div v-for="author of store.authors" :key="author.id">
+      {{ author.id }}: {{ author.first_name }} {{ author.last_name }}
+  </div>
+
     <h3>Essential Links</h3>
     <ul>
       <li>
@@ -38,16 +25,6 @@
       <li>
         <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
           >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
         >
       </li>
       <li>
@@ -91,6 +68,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'HelloWorld',
@@ -105,6 +83,12 @@ export default {
   },
   props: {
     msg: String,
+  },
+  mounted() {
+    axios.get('http://localhost:8009/author').then(response => {
+      console.log(response.data)
+      this.$store.commit('setAuthors', response.data)
+    })
   },
 }
 </script>

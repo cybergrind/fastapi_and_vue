@@ -4,6 +4,7 @@ const store = createStore({
   state() {
     return {
       default: 1,
+      authors: [],
     }
   },
   mutations: {
@@ -12,6 +13,9 @@ const store = createStore({
     },
     decrement(state) {
       state.default -= 1
+    },
+    setAuthors(state, authors) {
+      state.authors = [...state.authors, ...authors]
     },
   },
 })
