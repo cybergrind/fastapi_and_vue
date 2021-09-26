@@ -1,7 +1,7 @@
 import httpx
 import pytest
-from api.main import app
 from api.factories import AuthorF, BookF
+from api.main import app
 
 
 pytestmark = pytest.mark.asyncio
@@ -29,3 +29,16 @@ async def test_authors(client):
 async def test_factories():
     assert BookF()
     assert AuthorF()
+
+
+async def test_create_author(client: httpx.AsyncClient):
+    resp = await client.post('/author', json={'first_name': 1})
+    assert resp.status_code == 422
+
+    resp = await client.post('/author', json={'first_name': 'author', 'last_name': 'last'})
+    assert resp.status_code == 201
+    assert resp.json()['id'] == 3
+
+    resp = await client.post('/author', json={'first_name': 'author', 'last_name': 'last'})
+    assert resp.status_code == 201
+    assert resp.json()['id'] == 4

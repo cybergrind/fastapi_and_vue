@@ -1,7 +1,7 @@
 import factory
 from factory import Faker
 
-from .models import Author, Book
+from .models import AuthorOut, Book
 
 
 class AuthorF(factory.Factory):
@@ -10,7 +10,7 @@ class AuthorF(factory.Factory):
     last_name = Faker('last_name')
 
     class Meta:
-        model = Author
+        model = AuthorOut
 
 
 class BookF(factory.Factory):

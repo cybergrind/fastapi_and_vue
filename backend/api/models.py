@@ -2,8 +2,7 @@ import orjson
 from pydantic import BaseModel
 
 
-class Author(BaseModel):
-    id: int
+class AuthorBase(BaseModel):
     first_name: str
     last_name: str
 
@@ -12,8 +11,16 @@ class Author(BaseModel):
         json_loads = orjson.loads
 
 
+class AuthorOut(AuthorBase):
+    id: int
+
+
+class AuthorIn(AuthorBase):
+    pass
+
+
 class Book(BaseModel):
     id: int
     title: str
     year: int
-    author: Author
+    author: AuthorOut
