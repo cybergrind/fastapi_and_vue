@@ -1,6 +1,7 @@
 from typing import Any, List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from .factories import BookF
 from .models import AuthorIn, AuthorOut, Book
@@ -8,6 +9,10 @@ from .utils import ORJSONResponse
 
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins='http://localhost:8080'
+)
 
 
 @app.get('/')
