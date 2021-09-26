@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import List
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -38,11 +38,11 @@ async def create_author(data: AuthorIn):
 
 @app.post('/author/generate', response_model=AuthorOut, status_code=201)
 async def generate_author():
-    a = AuthorF()
+    a: AuthorOut = AuthorF()  # type: ignore
     AUTHORS.append(a)
     return a
 
 
-@app.get('/book', response_model=Book)
+@app.get('/book', response_model=List[Book])
 async def book():
     return ORJSONResponse(BOOKS)

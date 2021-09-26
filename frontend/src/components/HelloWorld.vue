@@ -1,23 +1,23 @@
 <template>
-<div class="hello">
-  <h1>{{ msg }}</h1>
-  <div>Default: {{ store.default }}</div>
-  <button v-on:click="increment">INC</button>
-  <button @click="decrement">DEC</button>
-  <p>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+    <div>Default: {{ store.default }}</div>
+    <button v-on:click="increment">INC</button>
+    <button @click="decrement">DEC</button>
+    <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
         >vue-cli documentation</a
       >.
     </p>
-  <h3>Authors</h3>
+    <h3>Authors</h3>
 
-  <div v-for="author of store.authors" :key="author.id">
+    <div v-for="author of store.authors" :key="author.id">
       {{ author.id }}: {{ author.first_name }} {{ author.last_name }}
-  </div>
+    </div>
 
-  <button @click="generate">Generate Random</button>
+    <button @click="generate">Generate Random</button>
 
     <h3>Essential Links</h3>
     <ul>
@@ -82,20 +82,17 @@ export default {
     decrement() {
       this.$store.commit('decrement')
     },
-    generate() {
-      axios.post('http://localhost:8009/author/generate').then(() => {
-        axios.get('http://localhost:8009/author').then(response => {
-          console.log(response.data)
-          this.$store.commit('setAuthors', response.data)
-        })
-      })
-    }
+    async generate() {
+      await axios.post('http://localhost:8009/author/generate')
+      let r = await axios.get('http://localhost:8009/author')
+      this.$store.commit('setAuthors', r.data)
+    },
   },
   props: {
     msg: String,
   },
   mounted() {
-    axios.get('http://localhost:8009/author').then(response => {
+    axios.get('http://localhost:8009/author').then((response) => {
       console.log(response.data)
       this.$store.commit('setAuthors', response.data)
     })
