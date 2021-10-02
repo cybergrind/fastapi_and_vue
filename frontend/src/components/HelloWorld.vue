@@ -1,9 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div>Default: {{ store.default }}</div>
-    <button v-on:click="increment">INC</button>
-    <button @click="decrement">DEC</button>
+    <counter />
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -12,12 +10,12 @@
       >.
     </p>
     <h3>Authors</h3>
-
+    <button @click="generate">Generate Random</button>
     <div v-for="author of store.authors" :key="author.id">
       {{ author.id }}: {{ author.first_name }} {{ author.last_name }}
     </div>
 
-    <button @click="generate">Generate Random</button>
+    <counter />
 
     <h3>Essential Links</h3>
     <ul>
@@ -71,17 +69,12 @@
 <script>
 import { mapState } from 'vuex'
 import axios from 'axios'
+import counter from './counter.vue'
 
 export default {
   name: 'HelloWorld',
   computed: mapState({ store: (state) => state }),
   methods: {
-    increment() {
-      this.$store.commit('increment')
-    },
-    decrement() {
-      this.$store.commit('decrement')
-    },
     async generate() {
       await axios.post('http://localhost:8009/author/generate')
       let r = await axios.get('http://localhost:8009/author')
@@ -96,6 +89,9 @@ export default {
       console.log(response.data)
       this.$store.commit('setAuthors', response.data)
     })
+  },
+  components: {
+    counter,
   },
 }
 </script>
