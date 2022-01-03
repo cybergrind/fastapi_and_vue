@@ -76,8 +76,8 @@ export default {
   computed: mapState({ store: (state) => state }),
   methods: {
     async generate() {
-      await axios.post('http://localhost:8009/author/generate')
-      let r = await axios.get('http://localhost:8009/author')
+      await axios.post('/author/generate')
+      let r = await axios.get('/author')
       this.$store.commit('setAuthors', r.data)
     },
   },
@@ -85,7 +85,7 @@ export default {
     msg: String,
   },
   mounted() {
-    axios.get('http://localhost:8009/author').then((response) => {
+    axios.get('/author').then((response) => {
       console.log(response.data)
       this.$store.commit('setAuthors', response.data)
     })
