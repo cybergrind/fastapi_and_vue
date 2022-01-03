@@ -17,7 +17,13 @@ const store = createStore({
     setAuthors(state, authors) {
       state.authors = authors
     },
+    SOCKET_ONOPEN() {},
   },
+  actions: {
+    echo(ctx, { msg }) {
+      console.log(`Got ECHO msg: ${msg}`)
+    },
+  }
 })
 
 export default store

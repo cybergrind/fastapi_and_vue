@@ -1,11 +1,12 @@
 from typing import List
 
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .factories import AuthorF, BookF
 from .models import AuthorIn, AuthorOut, Book
 from .utils import ORJSONResponse
+from .websocket import ws_handler
 
 
 app = FastAPI()
@@ -48,4 +49,5 @@ async def generate_author():
 async def book():
     return ORJSONResponse(BOOKS)
 
+api.websocket('/api/ws')(ws_handler)
 app.include_router(api)

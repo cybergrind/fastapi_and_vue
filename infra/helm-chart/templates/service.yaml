@@ -61,6 +61,8 @@ spec:
         - namespace: {{ .Values.namespace }}
           name: fastapi-vue-backend
           port: 80
+      middlewares:
+        - name: fv-headers
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -77,3 +79,13 @@ spec:
         - namespace: {{ .Values.namespace }}
           name: fastapi-vue-frontend
           port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: fv-headers
+  namespace: {{ .Values.namespace }}
+spec:
+  headers:
+    customRequestHeaders:
+      Host: localhost
