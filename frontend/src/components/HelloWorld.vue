@@ -70,14 +70,15 @@
 import { mapState } from 'vuex'
 import axios from 'axios'
 import counter from './counter.vue'
+import { API_BASE } from '../const'
 
 export default {
   name: 'HelloWorld',
   computed: mapState({ store: (state) => state }),
   methods: {
     async generate() {
-      await axios.post('/author/generate')
-      let r = await axios.get('/author')
+      await axios.post(`${API_BASE}/author/generate`)
+      let r = await axios.get(`${API_BASE}/author`)
       this.$store.commit('setAuthors', r.data)
     },
   },
@@ -85,7 +86,7 @@ export default {
     msg: String,
   },
   mounted() {
-    axios.get('/author').then((response) => {
+    axios.get(`${API_BASE}/author`).then((response) => {
       console.log(response.data)
       this.$store.commit('setAuthors', response.data)
     })
