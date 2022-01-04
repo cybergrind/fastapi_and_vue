@@ -1,0 +1,11 @@
+variables:
+  REGISTRY: 'registry.kube.zz'
+  FRONT_IMAGE: ${REGISTRY}/frontend
+  BACK_IMAGE: ${REGISTRY}/backend
+
+build front:
+  script:
+    - docker build --tag $FRONT_IMAGE . -f infra/Dockerfile.frontend
+    - docker push $FRONT_IMAGE
+  tags:
+    - kube-local
