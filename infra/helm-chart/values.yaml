@@ -20,6 +20,7 @@ externalIp: 192.168.88.34
 
 registry:
   hostname: registry.kube.zz
+  secretName: registry-tls
   spec:
     nodeSelector:
       kubernetes.io/hostname: home

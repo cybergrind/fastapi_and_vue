@@ -38,6 +38,19 @@ spec:
           storage: 20Gi
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.registry.secretName }}
+  namespace: {{ .Values.namespace }}
+type: kubernetes.io/tls
+data:
+  # the data is abbreviated in this example
+  tls.crt: |-
+    {{ .Files.Get "domain.crt" | b64enc }}
+  tls.key: |-
+    {{ .Files.Get "domain.key" | b64enc }}
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: registry-svc
@@ -68,7 +81,7 @@ spec:
           name: registry-svc
           port: 80
   tls:
-    secretName: registry-tls
+    secretName: {{ .Values.registry.secretName }}
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -90,7 +103,7 @@ spec:
       - name: registry-ca
         image: busybox
         command: [ 'sh' ]
-        args: [ '-c', 'cp -r /home/certs/tls.crt /etc/docker/certs.d/{{ .Values.registry.hostname }}/ca.crt && exec tail -f /dev/null' ]
+        args: [ '-c', 'cp -L /home/certs/tls.crt /etc/docker/certs.d/{{ .Values.registry.hostname }}/ca.crt && exec tail -f /dev/null' ]
         volumeMounts:
         - name: etc-docker
           mountPath: /etc/docker/certs.d/{{ .Values.registry.hostname }}
@@ -103,4 +116,4 @@ spec:
           path: /etc/docker/certs.d/{{ .Values.registry.hostname }}
       - name: ca-cert
         secret:
-          secretName: registry-tls
+          secretName: {{ .Values.registry.secretName }}
