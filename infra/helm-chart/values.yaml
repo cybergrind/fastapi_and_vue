@@ -17,6 +17,16 @@ namespace: fastapi-vue
 hostname: fastapi.kube.zz
 externalIp: 192.168.88.34
 
+
+registry:
+  hostname: registry.kube.zz
+  spec:
+    nodeSelector:
+      kubernetes.io/hostname: home
+
+storage:
+  className: longhorn
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

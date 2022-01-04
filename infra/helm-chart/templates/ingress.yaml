@@ -59,3 +59,48 @@ spec:
           {{- end }}
     {{- end }}
 {{- end }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: backend
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ .Values.hostname }}`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - namespace: {{ .Values.namespace }}
+          name: fastapi-vue-backend
+          port: 80
+      middlewares:
+        - name: fv-headers
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: frontend
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ .Values.hostname }}`)
+      kind: Rule
+      services:
+        - namespace: {{ .Values.namespace }}
+          name: fastapi-vue-frontend
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: fv-headers
+  namespace: {{ .Values.namespace }}
+spec:
+  headers:
+    customRequestHeaders:
+      Host: localhost
+
