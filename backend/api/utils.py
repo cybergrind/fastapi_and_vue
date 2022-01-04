@@ -1,3 +1,4 @@
+import socket
 from typing import Any
 
 import orjson
@@ -14,3 +15,9 @@ def default_encode(obj):
 class ORJSONResponse(O):
     def render(self, content: Any) -> bytes:
         return orjson.dumps(content, default=default_encode)
+
+
+def get_my_ip() -> str:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('10.255.255.255', 1))
+    return s.getsockname()[0]

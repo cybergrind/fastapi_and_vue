@@ -1,0 +1,15 @@
+from node:16.13 as js
+
+RUN mkdir front
+ADD frontend/package.json front/
+WORKDIR front
+RUN yarn
+
+ADD frontend .
+RUN ls -lah
+RUN pwd
+RUN yarn build
+
+
+from nginx:1.21
+COPY --from=js front/dist /usr/share/nginx/html

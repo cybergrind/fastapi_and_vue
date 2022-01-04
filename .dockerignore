@@ -1,0 +1,7 @@
+**/node_modules
+**/venv
+.tox
+.git
+**/__pycache__
+**/.mypy_cache
+frontend/dist
