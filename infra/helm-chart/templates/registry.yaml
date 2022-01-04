@@ -59,6 +59,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   entryPoints:
+    - websecure
     - web
   routes:
     - match: Host(`{{ .Values.registry.hostname }}`)
@@ -67,3 +68,5 @@ spec:
         - namespace: {{ .Values.namespace }}
           name: registry-svc
           port: 80
+  tls:
+    secretName: registry-tls
