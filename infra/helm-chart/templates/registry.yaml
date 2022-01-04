@@ -15,9 +15,8 @@ spec:
       labels:
         app: registry
     spec:
-      {{- range $key, $value := $.Values.registry.spec }}
-      {{ $key }}:
-        {{ toYaml $value }}
+      {{- with .Values.registry.spec }}
+      {{- toYaml . | nindent 6}}
       {{- end }}
       containers:
       - name: registry
@@ -70,3 +69,38 @@ spec:
           port: 80
   tls:
     secretName: registry-tls
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: registry-ca
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: registry-ca
+spec:
+  selector:
+    matchLabels:
+      name: registry-ca
+  template:
+    metadata:
+      labels:
+        name: registry-ca
+    spec:
+      containers:
+      - name: registry-ca
+        image: busybox
+        command: [ 'sh' ]
+        args: [ '-c', 'cp -r /home/certs/tls.crt /etc/docker/certs.d/{{ .Values.registry.hostname }}/ca.crt && exec tail -f /dev/null' ]
+        volumeMounts:
+        - name: etc-docker
+          mountPath: /etc/docker/certs.d/{{ .Values.registry.hostname }}
+        - name: ca-cert
+          mountPath: /home/certs
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: etc-docker
+        hostPath:
+          path: /etc/docker/certs.d/{{ .Values.registry.hostname }}
+      - name: ca-cert
+        secret:
+          secretName: registry-tls
