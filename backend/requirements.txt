@@ -1,7 +1,8 @@
 aiofiles==0.8.0
+factory-boy==3.2.0
 fastapi==0.70.1
 httptools==0.2.0
+httpx==0.18.2
 orjson==3.5.3
 uvicorn[standard]==0.16.0
 uvloop==0.16.0
-

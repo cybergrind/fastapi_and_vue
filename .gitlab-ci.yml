@@ -9,3 +9,10 @@ build front:
     - docker push $FRONT_IMAGE
   tags:
     - kube-local
+
+build back:
+  script:
+    - docker build --tag $BACK_IMAGE . -f infra/Dockerfile.backend
+    - docker push $BACK_IMAGE
+  tags:
+    - kube-local

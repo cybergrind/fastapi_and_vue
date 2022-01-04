@@ -132,3 +132,5 @@ dmypy.json
 .envrc
 
 frontend/node_modules
+/infra/helm-chart/domain.crt
+/infra/helm-chart/domain.key
