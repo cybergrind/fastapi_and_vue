@@ -31,6 +31,18 @@ helm upgrade fastapi-vue ./helm-chart
 ```
 
 
+If you switch `backend.useExternal` you may need to edit endpoint
+
+```bash
+k edit endpoints fastapi-vue-backend
+
+# and add
+metadata:
+  annotations:
+    meta.helm.sh/release-name: fastapi-vue
+    meta.helm.sh/release-namespace: fastapi-vue
+```
+
 #### Certificates
 
 ```bash

@@ -27,7 +27,7 @@ registry:
 
 backend:
   zk_host: zookeeper.dev.svc.cluster.local
-  useExternal: no
+  useExternal: yes
   image: registry.kube.zz/backend:latest
 
 frontend:
