@@ -1,5 +1,6 @@
 from typing import List
 
+from api import const
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -48,6 +49,12 @@ async def generate_author():
 @api.get('/book', response_model=List[Book])
 async def book():
     return ORJSONResponse(BOOKS)
+
+
+@api.get('/settings')
+async def get_settings():
+    return {'zk_host': const.ZK_HOST}
+
 
 api.websocket('/api/ws')(ws_handler)
 app.include_router(api)
