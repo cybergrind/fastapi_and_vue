@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 8081
       protocol: TCP
 ---
 apiVersion: v1
@@ -23,25 +23,35 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 80
-      targetPort: 8009
+      targetPort: {{ if .Values.backend.useExternal -}} 8009 {{- else -}} 80 {{- end }}
       protocol: TCP
+  {{- if not .Values.backend.useExternal }}
+  selector:
+    app: fastapi-backend
+  {{- end}}
 ---
 apiVersion: v1
 kind: Endpoints
 metadata:
   name: fastapi-vue-frontend
+  labels:
+    {{- include "helm-chart.labels" . | nindent 4 }}
 subsets:
   - addresses:
       - ip: {{ .Values.externalIp }}
     ports:
-      - port: 8080
+      - port: 8081
 ---
+{{- if .Values.backend.useExternal }}
 apiVersion: v1
 kind: Endpoints
 metadata:
   name: fastapi-vue-backend
+  labels:
+    {{- include "helm-chart.labels" . | nindent 4 }}
 subsets:
   - addresses:
       - ip: {{ .Values.externalIp }}
     ports:
       - port: 8009
+{{- end}}

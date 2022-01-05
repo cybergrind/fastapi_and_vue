@@ -27,6 +27,12 @@ registry:
 
 backend:
   zk_host: zookeeper.dev.svc.cluster.local
+  useExternal: no
+  image: registry.kube.zz/backend:latest
+
+frontend:
+  useExternal: yes
+  image: registry.kube.zz/frontend:latest
 
 storage:
   className: longhorn
@@ -40,7 +46,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations:
+  linkerd.io/inject: enabled
 
 podSecurityContext: {}
   # fsGroup: 2000
