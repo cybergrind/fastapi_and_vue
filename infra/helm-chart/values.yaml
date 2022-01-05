@@ -25,6 +25,9 @@ registry:
     nodeSelector:
       kubernetes.io/hostname: home
 
+backend:
+  zk_host: zookeeper.dev.svc.cluster.local
+
 storage:
   className: longhorn
 
