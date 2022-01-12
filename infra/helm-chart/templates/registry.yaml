@@ -83,17 +83,17 @@ spec:
   tls:
     secretName: {{ .Values.registry.secretName }}
 ---
-apiVersion: apps/v1
-kind: DaemonSet
+apiVersion: apps.kruise.io/v1alpha1
+kind: BroadcastJob
 metadata:
   name: registry-ca
   namespace: {{ .Values.namespace }}
   labels:
     k8s-app: registry-ca
 spec:
-  selector:
-    matchLabels:
-      name: registry-ca
+  completionPolicy:
+    type: Always
+    ttlSecondsAfterFinished: 30
   template:
     metadata:
       labels:
@@ -103,13 +103,14 @@ spec:
       - name: registry-ca
         image: busybox
         command: [ 'sh' ]
-        args: [ '-c', 'cp -L /home/certs/tls.crt /etc/docker/certs.d/{{ .Values.registry.hostname }}/ca.crt && exec tail -f /dev/null' ]
+        args: [ '-c', 'cp -L /home/certs/tls.crt /etc/docker/certs.d/{{ .Values.registry.hostname }}/ca.crt' ]
         volumeMounts:
         - name: etc-docker
           mountPath: /etc/docker/certs.d/{{ .Values.registry.hostname }}
         - name: ca-cert
           mountPath: /home/certs
       terminationGracePeriodSeconds: 30
+      restartPolicy: OnFailure
       volumes:
       - name: etc-docker
         hostPath:
