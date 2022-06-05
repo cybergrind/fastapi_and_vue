@@ -3,7 +3,9 @@ import logging
 from fastapi import WebSocket
 from starlette.websockets import WebSocketDisconnect
 
+
 log = logging.getLogger('websocket')
+
 
 class WsHandler:
     log = logging.getLogger('WsHandler')

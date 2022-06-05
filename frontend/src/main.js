@@ -9,7 +9,7 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(VueNativeSock, `ws://${location.host}/api/ws`, {
-  store: useStore().rawAuthors,
+  store: useStore(pinia),
   reconnection: true,
   format: 'json',
 })

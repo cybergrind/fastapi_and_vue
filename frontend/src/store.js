@@ -32,7 +32,16 @@ const useStore = defineStore({
       axios.get(`${API_BASE}/author`).then((response) => {
         this.rawAuthors = response.data
       })
-    }
+    },
+    SOCKET_ONOPEN(){
+      console.log('On socket open')
+    },
+    SOCKET_ONCLOSE(){
+      console.log('On socket close')
+    },
+    SOCKET_ONMESSAGE(e){
+      console.log('message: ', e)
+    },
   },
 })
 

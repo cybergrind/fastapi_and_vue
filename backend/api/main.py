@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from api import const
@@ -13,6 +14,8 @@ from .websocket import ws_handler
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins='http://localhost:8080')
 api = APIRouter(prefix='/api')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
+log = logging.getLogger('main')
 
 
 @api.get('/')
@@ -29,6 +32,7 @@ BOOKS = [BookF() for _ in range(10)]
 
 @api.get('/author', response_model=List[AuthorOut])
 async def author():
+    log.info('authors')
     return ORJSONResponse(AUTHORS)
 
 
