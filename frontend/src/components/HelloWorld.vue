@@ -10,8 +10,8 @@
       >.
     </p>
     <h3>Authors</h3>
-    <button @click="generate">Generate Random</button>
-    <div v-for="author of store.authors" :key="author.id">
+    <button @click="store.generate">Generate Random</button>
+    <div v-for="author in authors" :key="author.id">
       {{ author.id }}: {{ author.first_name }} {{ author.last_name }}
     </div>
 
@@ -67,34 +67,40 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import axios from 'axios'
 import counter from './counter.vue'
-import { API_BASE } from '../const'
+import { useStore } from '../store'
+import { storeToRefs } from 'pinia'
+import { defineComponent, onMounted, onUpdated } from 'vue'
 
-export default {
-  name: 'HelloWorld',
-  computed: mapState({ store: (state) => state }),
-  methods: {
-    async generate() {
-      await axios.post(`${API_BASE}/author/generate`)
-      let r = await axios.get(`${API_BASE}/author`)
-      this.$store.commit('setAuthors', r.data)
+
+export default defineComponent({
+    name: 'HelloWorld',
+    props: {
+        msg: String,
     },
-  },
-  props: {
-    msg: String,
-  },
-  mounted() {
-    axios.get(`${API_BASE}/author`).then((response) => {
-      console.log(response.data)
-      this.$store.commit('setAuthors', response.data)
-    })
-  },
-  components: {
-    counter,
-  },
-}
+    setup() {
+        const store = useStore()
+        const { authors } = storeToRefs(store)
+
+        onUpdated(() => {
+            console.log('updated: ', authors)
+        })
+
+        onMounted(async ()=>{
+            console.log('mounted')
+            await store.initFromServer()
+            console.log('Authors: ', authors)
+        })
+
+        return {
+            authors,
+            store,
+        }
+    },
+    components: {
+        counter
+    },
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

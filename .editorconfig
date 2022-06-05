@@ -11,7 +11,7 @@ indent_size = 4
 emacs_py_project = .
 # emacs_py_save_touch = infra/uwsgi.ini
 
-[frontend/**.{js,jsx}]
+[frontend/**.{js,jsx,vue}]
 indent_style = space
 indent_size = 2
 # emacs_py_save_touch = frontend/package.json

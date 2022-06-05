@@ -1,29 +1,40 @@
-import { createStore } from 'vuex'
+import { defineStore } from 'pinia'
+import axios from 'axios'
+import { API_BASE } from './const'
 
-const store = createStore({
-  state() {
-    return {
-      default: 1,
-      authors: [],
-    }
-  },
-  mutations: {
-    increment(state) {
-      state.default += 1
+const useStore = defineStore({
+  id: 'fastapiStore',
+  state: () => ({
+    rawAuthors: [],
+    default: 1,
+  }),
+  getters: {
+    authors: (state) => {
+      return state.rawAuthors.reduce((acc, i) => {
+        acc.push(i)
+        return acc
+      }, [])
     },
-    decrement(state) {
-      state.default -= 1
-    },
-    setAuthors(state, authors) {
-      state.authors = authors
-    },
-    SOCKET_ONOPEN() {},
   },
   actions: {
-    echo(ctx, { msg }) {
-      console.log(`Got ECHO msg: ${msg}`)
+    increment() {
+      this.default += 1
     },
-  }
+    decrement() {
+      this.default -= 1
+    },
+    async generate() {
+      await axios.post(`${API_BASE}/author/generate`)
+      let r = await axios.get(`${API_BASE}/author`)
+      this.rawAuthors = r.data
+    },
+    async initFromServer() {
+      axios.get(`${API_BASE}/author`).then((response) => {
+        this.rawAuthors = response.data
+      })
+    }
+  },
 })
 
-export default store
+export { useStore }
+

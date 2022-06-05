@@ -7,20 +7,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { useStore } from '../store'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'counter',
-  computed: mapState({ store: (state) => state }),
-  methods: {
-    increment() {
-      this.$store.commit('increment')
-    },
-    decrement() {
-      this.$store.commit('decrement')
-    },
+  setup() {
+    const store = useStore()
+    const { increment, decrement } = store
+    return {
+      store,
+      increment,
+      decrement,
+    }
   },
-}
+})
 </script>
 
 <style scoped>

@@ -9,7 +9,7 @@ venv: backend/requirements.txt
 
 
 run: venv
-	${BIN}/uvicorn api.main:app --reload --reload-dir backend/api --host=0.0.0.0 --port=8009
+	${BIN}/uvicorn api.main:app --reload --reload-dir backend/api --host=:: --port=8009
 
 max_perf: venv
 	${BIN}/pip install gunicorn
